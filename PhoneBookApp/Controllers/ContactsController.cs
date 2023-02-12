@@ -44,10 +44,18 @@ namespace PhoneBookApp.Controllers
             return Ok("Hello World");
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateContact(int id, [FromBody] ContactModel contact)
+        [HttpPut]
+        public async Task<IActionResult> UpdateContact([FromBody] ContactViewModel contact)
         {
-            return Ok("Hello World");
+            var result = await _contactsService.UpdateContact(new ContactModel
+            {
+                Id= contact.Id,
+                Name = contact.Name,
+                Surname = contact.Surname,
+                Telephone = contact.PhoneNumber
+            });
+
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]

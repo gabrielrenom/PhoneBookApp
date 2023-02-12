@@ -41,3 +41,23 @@ export const deleteContact = async (id) => {
         return -2;
     }
 }
+
+export const updateContact = async (contact) => {
+    try {
+        let response = await fetch(`/contacts`,
+            {
+                method: "PUT",
+                body: JSON.stringify(contact),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                }
+            }
+        );
+        let data = await response.json();
+        return data;
+    }
+    catch (error) {
+        return -2;
+    }
+}

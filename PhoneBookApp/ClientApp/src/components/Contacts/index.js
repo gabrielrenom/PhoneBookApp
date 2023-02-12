@@ -1,7 +1,7 @@
 ﻿import { map } from 'jquery';
 import { Form, FormGroup, Label, ListGroup, ListGroupItem, ListGroupItemHeading, InputGroupText, Button, ListGroupItemText, Col, Row, Container, InputGroup, Input } from 'reactstrap';
 import { BsFillTelephoneFill, BsFillTrashFill, BsSearch } from "react-icons/bs";
-import { createContact, getContacts, deleteContact } from '../../services/contactsservice';
+import { createContact, getContacts, deleteContact, updateContact } from '../../services/contactsservice';
 import { useEffect, useState } from 'react';
 import MaskedInput from "react-input-mask";
 
@@ -30,18 +30,26 @@ const contacts = [
 
 export default function Contacts() {
 
-    const [newcontact, setNewContact] = useState({ name: "",surname:"",phonenumber:"" });
+    const [newcontact, setNewContact] = useState({id:0, name: "",surname:"",phonenumber:"" });
     const [dbcontacts, setDbcontacts] = useState([]);
-    const [isAddContact, setIsAddContact] = useState(false);
+    const [isAddOrModifiedContact, setIsAddOrModifiedContact] = useState(false);
+    const [activeItem, setActiveItem] = useState("");
+    const [hasbeenadded, setHasBeenAdded] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredDbContacts, setFilteredDbContacts] = useState([]);
 
     useEffect(() => {
+        
         const fetchData = async () => {
             var result = await getContacts();
             console.log(result);
             setDbcontacts(result);
           }
-        fetchData().catch(console.error);
-    }, [dbcontacts]);
+          if (hasbeenadded) {
+            fetchData();
+            setHasBeenAdded(false);
+          }
+    }, [hasbeenadded]);
 
 
     const telephoneFormater = (telephone) => {
@@ -55,21 +63,34 @@ export default function Contacts() {
                     <InputGroupText style={{ backgroundColor: "white" }}>
                         <BsSearch />
                     </InputGroupText>
-                    <Input placeholder="Search for contact by last name..." />
+                    <Input 
+                        placeholder="Search for contact by last name..." 
+                        name="searchTerm"
+                        value={searchTerm}
+                        onChange={(e) => handleSearchTerm(e.target.value)}
+                        />
                 </InputGroup>
 
             </div>
         );
     }
 
-    const removeContact = (id) => {
-        deleteContact(id);
-        console.log(id);
+    const removeContact = async(id) => {
+        await deleteContact(id);
+        setHasBeenAdded(true);
     }
+
+    const handleClickListItem = async (item) => {
+        setActiveItem(item);
+        setNewContact({id:item.id,name:item.name,surname:item.surname,phonenumber:item.telephone});
+        setIsAddOrModifiedContact(true);
+      };
 
     const phoneBookContact = (contact) => {
         return (
-            <ListGroupItem>
+            <ListGroupItem 
+                active={activeItem === contact}
+                onClick={() => handleClickListItem(contact)}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
                         <ListGroupItemHeading>{contact.name} {contact.surname}</ListGroupItemHeading>
@@ -89,18 +110,32 @@ export default function Contacts() {
         )
     };
 
-    const addContact = () => {
-        createContact(newcontact);
-        setIsAddContact(false);
+    const addContact = async () => {
+        await createContact(newcontact);
+        setIsAddOrModifiedContact(false);
+        setHasBeenAdded(true);
     }
 
+    const updateCurrentContact = async () => {
+        await updateContact(newcontact);
+        setIsAddOrModifiedContact(false);
+        setHasBeenAdded(true);
+    }
+
+    
     function handleSelect(e) {
         setNewContact((prev) => ({
           ...prev,
-          [e.target.name]: e.target.value,
+          [e.target.name]: e.target.name==="phonenumber"? e.target.value.replace(/[^\d]/g, ''): e.target.value,
         }))
       }
-    const enableNewContact = () => { setIsAddContact(!isAddContact); }
+    
+    const handleSearchTerm = (searchterm) => {
+        setSearchTerm(searchterm);
+        setFilteredDbContacts(dbcontacts.filter((contact) => contact.surname.toLowerCase().includes(searchTerm.toLowerCase())));
+    }
+
+    const enableNewContact = () => { setIsAddOrModifiedContact(!isAddOrModifiedContact); }
     return (
 
 
@@ -114,7 +149,7 @@ export default function Contacts() {
                         <Button color='primary' onClick={()=>enableNewContact()}>Add Contact</Button>
                     </Col>
                 </Row>
-                {isAddContact && 
+                {isAddOrModifiedContact && 
                 <Row style={{ paddingTop: '20px' }}>
 
                     <Col md="6">
@@ -134,24 +169,23 @@ export default function Contacts() {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                {/* <Input placeholder="Telephone"
-                                      name="phonenumber" 
-                                   value={newcontact.phonenumber}
-                                   onChange={handleSelect}
-                                   component={MyInput}
-                                /> */}
-                                 {/* <MaskedInput 
+                                 <MaskedInput 
                                  name="phonenumber" 
                                    value={newcontact.phonenumber}
                                    onChange={handleSelect}                                    
                                    mask="(999) 999-9999"
                                     placeholder="Enter a phone number"
                                     className="form-control"
-                                /> */}
+                                />
                             </FormGroup>
+                            
+                            {activeItem ? 
+                            <Button color='primary' onClick={()=>updateCurrentContact()}>
+                                Update
+                            </Button>:
                             <Button color='primary' onClick={()=>addContact()}>
                                 Add
-                            </Button>
+                            </Button>}
                         </Form>
                     </Col>
                 </Row> }
@@ -162,8 +196,11 @@ export default function Contacts() {
                 <Row style={{ paddingTop: '20px' }}>
                     <Col>
                         <ListGroup>
-                             {dbcontacts && dbcontacts.map((contact) => { return (phoneBookContact(contact)) })}  
-                        </ListGroup>
+                            {searchTerm ? filteredDbContacts && filteredDbContacts.map((contact) => { return (phoneBookContact(contact)) })
+                            :
+                            dbcontacts && dbcontacts.map((contact) => { return (phoneBookContact(contact)) })}  
+                        
+                        </ListGroup> 
                     </Col>
                 </Row>
 

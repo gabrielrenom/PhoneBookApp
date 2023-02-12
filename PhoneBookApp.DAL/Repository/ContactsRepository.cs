@@ -58,7 +58,15 @@ namespace PhoneBookApp.DAL.Repository
 
         public async Task<Contact> UpdateContact(Contact contact)
         {
-            var result = await _genericRepository.Update(contact);
+            var entity = await _context.Contacts.Include(x => x.PhoneNumbers).FirstOrDefaultAsync(x => x.Id == contact.Id);
+            
+            entity.Name = contact.Name;
+            entity.Surname = contact.Surname;
+            
+            if (entity.PhoneNumbers.Count>0)
+                entity.PhoneNumbers[0].Number= contact.PhoneNumbers[0].Number;
+
+            var result = await _genericRepository.Update(entity);
             return contact;
         }
 
