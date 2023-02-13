@@ -1,4 +1,5 @@
-﻿using PhoneBookApp.DAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PhoneBookApp.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace PhoneBookApp.DAL.Repository
         Task<Contact> UpdateContact(Contact contact);
         Task<bool> DeleteContact(int id);
         Task<Contact> GetContactByName(string name);
+        void SetDbSet(DbSet<Contact> dbset);
     }
 }

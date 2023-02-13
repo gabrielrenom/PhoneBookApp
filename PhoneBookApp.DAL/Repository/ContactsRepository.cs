@@ -18,37 +18,65 @@ namespace PhoneBookApp.DAL.Repository
             _context = context;
             _genericRepository = new GenericRepository<Contact>(_context);
         }
-        
+
         public async Task<Contact> CreateContact(Contact contact)
         {
-            var result = await _genericRepository.Insert(contact);
+            try
+            {
+                var result = await _genericRepository.Insert(contact);
 
-            return result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<bool> DeleteContact(int id)
         {
-            var entity = await _genericRepository.GetById(id);
-            var telephones = await _context.PhoneNumbers.ToListAsync();
-            if (telephones != null)
+            try
             {
-                _context.RemoveRange(telephones);
-                await _context.SaveChangesAsync();
+                var entity = await _genericRepository.GetById(id);
+                var telephones = await _context.PhoneNumbers.Where(x => x.ContactId == id).ToListAsync();
+                if (telephones != null)
+                {
+                    _context.RemoveRange(telephones);
+                    await _context.SaveChangesAsync();
+                }
+                var result = await _genericRepository.Delete(entity);
+                return true;
             }
-            var result = await _genericRepository.Delete(entity);
-            return true;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<IEnumerable<Contact>> GetAllContacts()
         {
-            var result = await _context.Contacts.Include(x=>x.PhoneNumbers).ToListAsync();
-            return result;
+            try
+            {
+                var result = await _context.Contacts.Include(x => x.PhoneNumbers).ToListAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<Contact> GetContactById(int id)
         {
-            var result = await _genericRepository.GetById(id);
-            return result;
+            try
+            {
+                var result = await _genericRepository.GetById(id);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<Contact> GetContactByName(string name)
@@ -58,17 +86,29 @@ namespace PhoneBookApp.DAL.Repository
 
         public async Task<Contact> UpdateContact(Contact contact)
         {
-            var entity = await _context.Contacts.Include(x => x.PhoneNumbers).FirstOrDefaultAsync(x => x.Id == contact.Id);
-            
-            entity.Name = contact.Name;
-            entity.Surname = contact.Surname;
-            
-            if (entity.PhoneNumbers.Count>0)
-                entity.PhoneNumbers[0].Number= contact.PhoneNumbers[0].Number;
+            try
+            {
+                var entity = await _context.Contacts.Include(x => x.PhoneNumbers).FirstOrDefaultAsync(x => x.Id == contact.Id);
 
-            var result = await _genericRepository.Update(entity);
-            return contact;
+                entity.Name = contact.Name;
+                entity.Surname = contact.Surname;
+
+                if (entity.PhoneNumbers.Count > 0)
+                    entity.PhoneNumbers[0].Number = contact.PhoneNumbers[0].Number;
+
+                var result = await _genericRepository.Update(entity);
+                return contact;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
+        public void SetDbSet(DbSet<Contact> dbset)
+        {
+            _genericRepository.Entities = dbset;
+        }
     }
+
 }

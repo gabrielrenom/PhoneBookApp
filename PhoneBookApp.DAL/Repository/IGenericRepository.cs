@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace PhoneBookApp.DAL.Repository
         Task<T> Insert(T entity);        
         Task<bool> Update(T entity);
         Task<bool> Delete(T entity);
+        DbSet<T> Entities { get; set; }
     }
 }

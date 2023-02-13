@@ -10,8 +10,8 @@ namespace PhoneBookApp.DAL.Context
 {
     public class PhoneBookDbContext:DbContext
     {
-        public DbSet<Contact> Contacts { get; set; }
-        public DbSet<PhoneNumber> PhoneNumbers { get; set; }
+        public virtual DbSet<Contact> Contacts { get; set; }
+        public virtual DbSet<PhoneNumber> PhoneNumbers { get; set; }
 
         public PhoneBookDbContext(DbContextOptions<PhoneBookDbContext> options) : base(options)
         {

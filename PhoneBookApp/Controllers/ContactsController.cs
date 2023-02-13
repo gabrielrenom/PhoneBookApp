@@ -38,12 +38,6 @@ namespace PhoneBookApp.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetContact(int id)
-        {
-            return Ok("Hello World");
-        }
-
         [HttpPut]
         public async Task<IActionResult> UpdateContact([FromBody] ContactViewModel contact)
         {

@@ -26,3 +26,17 @@ C:\workspace\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\refint\PhoneBookApp.
 C:\workspace\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.pdb
 C:\workspace\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.genruntimeconfig.cache
 C:\workspace\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\ref\PhoneBookApp.DAL.dll
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\bin\Debug\net6.0\PhoneBookApp.DAL.deps.json
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\bin\Debug\net6.0\PhoneBookApp.DAL.runtimeconfig.json
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\bin\Debug\net6.0\PhoneBookApp.DAL.dll
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\bin\Debug\net6.0\ref\PhoneBookApp.DAL.dll
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\bin\Debug\net6.0\PhoneBookApp.DAL.pdb
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.csproj.AssemblyReference.cache
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.AssemblyInfoInputs.cache
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.AssemblyInfo.cs
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.csproj.CoreCompileInputs.cache
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.dll
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\ref\PhoneBookApp.DAL.dll
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.pdb
+C:\workspace\phonebook\PhoneBookApp\PhoneBookApp.DAL\obj\Debug\net6.0\PhoneBookApp.DAL.genruntimeconfig.cache

@@ -1,0 +1,7 @@
+﻿.listgroup {
+    display: 'flex'; 
+    justify-content: 'space-between';
+}
+.myfont{
+    color:greenyellow
+}

@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace PhoneBookApp.DAL.Repository
 {
-
-    public class GenericRepository<T>:IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly DbContext _context;
         private DbSet<T> _entities;
+
+        public DbSet<T> Entities
+        {
+            get => _entities;
+            set => _entities = value;
+        }
 
         public GenericRepository(DbContext context)
         {
@@ -23,7 +28,7 @@ namespace PhoneBookApp.DAL.Repository
         {
             return _entities.AsEnumerable();
         }
-        
+
         public async Task<T> GetById(int id)
         {
             return _entities.Find(id);
@@ -38,23 +43,39 @@ namespace PhoneBookApp.DAL.Repository
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("An error occurred while inserting the entity.", ex);
             }
-            
+
             return entity;
         }
 
         public async Task<bool> Update(T entity)
         {
-            _entities.Update(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _entities.Update(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while updating the entity.", ex);
+            }
+
             return true;
         }
 
         public async Task<bool> Delete(T entity)
         {
-            _entities.Remove(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _entities.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while deleting the entity.", ex);
+            }
+
             return true;
         }
     }
